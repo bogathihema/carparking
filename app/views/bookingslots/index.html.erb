@@ -1,0 +1,47 @@
+<div class ="container">
+<div class = "row">
+  <h2>Car Booking History</h2>
+  <table class="table" id="parking-slot-table">
+    <thead>
+      <tr>
+        <th>registration no:</th>
+        <th>entry no:</th>
+        <th>slot no:</th>
+        <th>Entry at:</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bookingslots.each do |slot| %>
+        <tr>
+          <td><%=slot.registration_no%></td>
+          <td><%=slot.entrance_no%></td>
+          <td><%=slot.slotno%></td>
+          <td><%=slot.entry_at%></td>
+          <td>
+            <%= button_to 'Delete slot', bookingslot_path(slot),
+                method: :delete,
+                data: { confirm: "Are you sure?" } %>
+
+
+          </td>
+        </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+  </div>
+  <div class = "row">
+    <div class = "col-sm-6">
+      <a href= "<%= new_bookingslot_path %>", class = "btn btn-danger btn-block rounded-0">Book Parking Slot</a>
+    </div>
+    <div class = "col-sm-6">
+      <a href= "<%= vehicle_history_bookingslots_path %>", class = "btn btn-primary btn-block rounded-0">Vehicle History</a>
+    </div>
+    </div>
+</div>
+
+<script>
+  $('#parking-slot-table').DataTable({
+  });
+</script>

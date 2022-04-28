@@ -1,0 +1,83 @@
+<div class = "contanier">
+  <div class = "row">
+    <div class = "col-sm text-center"><div>
+      <h1>Slot Booking for Car Parking</h1>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class = "row pt-3">
+    <div class = "col-sm-3"></div>
+    <div class = "col-sm-6">
+
+    <div class = "card">
+      <div class = "card-header"></div>
+      <div class = "card-body">
+        <%= form_with model: @booking_slot, url: bookingslots_path, method: :post do |f|%>
+          <div class = "row form-group">
+            <div class = "col">
+              <%= f.select(:entrance_no, Entry.all.pluck(:block), {include_blank: "Select Entry Point"}, { :class => 'form-control' }) %>
+          </div>
+          </div>
+
+          <div class = "row form-group">
+            <div class = "col">
+           <%= f.text_field :registration_no, class: "form-control", placeholder: "Enter Registration no:"%><br>
+          </div>
+          </div>
+          <%= f.hidden_field :slotno %>
+          <div class = "row form-group">
+            <div class = "col" id= "slot-alert">
+              <div class="alert alert-dark bg-light alert-info text-danger" role="alert">
+                <p class = "sort-alert"> </p>
+                <br/>
+              </div>
+          </div>
+          </div>
+
+
+          <div class = "row form-group">
+            <div class = "col-sm-6 text-center create-slot">
+              <%= f.submit class: "btn btn-danger" %>
+            </div>
+            <div class = "col-sm-6 text-center">
+              <%= link_to "Get Parking Slot", "javascript: getSlot()", :id => "get-slot-btn1", :class => "btn btn-primary" %>
+            </div>
+          </div>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+  function getSlot(){
+    $("#slot-alert").hide();
+    var entrance_no = $("#bookingslot_entrance_no").val();
+    var reg_no = $("#bookingslot_registration_no").val();
+    $.ajax({
+      url: "#{get_slot_bookingslots_path}",
+      type: "GET",
+      data: {entrance_no: entrance_no, registration_no: reg_no },
+      success: function(response) {
+        $("#slot-alert").show();
+        if (response.free_slot) {
+          $(".create-slot").show();
+          $("#bookingslot_slotno").val(response.free_slot);
+          $(".alert").html("Your slot will be...."+ response.free_slot);
+        } else if (response.booked) {
+          $(".alert").html(response.booked);
+        }else{
+          $(".alert").html("No slots available for this entry");
+        }
+      }
+    });
+  }
+
+  $(document).ready(function(){
+    $("#slot-alert").hide();
+    $(".create-slot").hide();
+  })
+  </script>

@@ -1,0 +1,66 @@
+<div class = "contanier">
+  <div class = "row">
+    <div class = "col-sm text-center"><div>
+      <h3>Search Vehicle History</h3>
+    </div>
+  </div>
+  <br>
+  <div class = "row pt-3">
+    <div class = "col-sm-3"></div>
+    <div class = "col-sm-6">
+
+        <%= form_with url: get_vehicle_slots_bookingslots_path, method: :get do %>
+          <div class = "row">
+            <div class="form-group">
+              <label for="registration_no">Enter car registration no:</label>
+              <input type="text" class="form-control" id="registration_no" name="registration_no">
+            </div>
+            <div class="form-group">
+              <label for="entry_date">Enter Entry Date:</label>
+              <input type="text" class="form-control" id="entry_date" name="entry_date">
+            </div>
+            <div class = "form-group text-center">
+              <div class = "col-sm-6 text-center create-slot">
+                <button type="submit" class="btn btn-success">Get Vehicle History</button>
+              </div>
+            </div>
+            </div>
+        <% end %>
+
+  </div>
+</div>
+<% if params[:registration_no].present? || params[:entry_date].present? %>
+<% if @history.present? %>
+  <div class = "container">
+  <div class = "row">
+    <div class = "col-2"></div>
+    <div class = "col-8">
+    <table class="table" id="vehicle-history-table">
+      <thead>
+        <tr>
+          <th>registration no:</th>
+          <th>Entry at:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @history.each do |slot| %>
+          <tr>
+            <td><%=slot.registration_no%></td>
+            <td><%=slot.entry_at%></td>
+          </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+    </div>
+  </div>
+  </div>
+<% end %>
+<% end %>
+</div>
+</div>
+
+<script>
+  $('#vehicle-history-table').DataTable({
+  });
+</script>
